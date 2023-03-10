@@ -32,7 +32,7 @@ $mandatory = [
 
 $default_mapping = [
     'ChannelCode' => 'ATQ',
-    'TransactionCategory' => 'Bill Payment',
+    'TransactionCategory' => 'Cash Deposit',
     'CardType' => 'D' ,
     'OnUsFlag' => 'OnUs',
     'MerchantCategoryCode' => '6011',
