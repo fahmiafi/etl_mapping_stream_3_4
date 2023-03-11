@@ -11,6 +11,8 @@ $mandatory = [
     'TransactionType',
     'TransactionCategory',
     'ChannelCode',
+    'BillerID',
+    'BillingNumber',
     'InternationalIndicator',
     'OnUsFlag',
     'ResponseCode',
@@ -31,7 +33,7 @@ $mandatory = [
 
 $default_mapping = [
     'IncomingOrOutgoingFlag' => 'D',
-    'TransactionCategory' => 'Cash Withdrawal',
+    'TransactionCategory' => 'Bill Payment',
     'ChannelCode' => 'DCA',
     'VerificationMethod' => '1' ,
 ];
@@ -43,5 +45,5 @@ $skip_mandatory = [
     'ReversalIndicator',
 ];
 
-$q_where_tran_id_unmatch = "SUBSTRING(TransactionId, 1, 17) != CONCAT('CCA', REPLACE(REPLACE(REPLACE(TransactionDateTime, ':', ''), '-', ''),' ', ''))";
-$q_where_tran_id_match = "SUBSTRING(TransactionId, 1, 17) = CONCAT('CCA', REPLACE(REPLACE(REPLACE(TransactionDateTime, ':', ''), '-', ''),' ', ''))";
+$q_where_tran_id_unmatch = "SUBSTRING(TransactionId, 1, 17) != CONCAT('DCA', REPLACE(REPLACE(REPLACE(TransactionDateTime, ':', ''), '-', ''),' ', ''))";
+$q_where_tran_id_match = "SUBSTRING(TransactionId, 1, 17) = CONCAT('DCA', REPLACE(REPLACE(REPLACE(TransactionDateTime, ':', ''), '-', ''),' ', ''))";

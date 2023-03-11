@@ -95,24 +95,24 @@ function default_mapping($kolom, $data)
 function kolom_mandatory($id, $param, $kolom){
     global $con, $tabel;
     
-    //CCA
+    //DCA
     if ($kolom == 'ErrorCode') {
         $q = mysqli_query($con, "SELECT ID, ResponseCode, ErrorCode, ErrorCodeDesc FROM $tabel WHERE ID = '$id'");
         $dt = mysqli_fetch_array($q);
-        if ($dt['ResponseCode'] == 'DECLINE' && $param > '000') {
+        if ($dt['ResponseCode'] > '000' && $param > '000') {
             return true;
         }
-        elseif ($dt['ResponseCode'] != 'DECLINE' && $param == ''){
+        elseif ($dt['ResponseCode'] == '000' && $param == ''){
             return true;
         }
     }
     elseif($kolom == 'ErrorCodeDesc'){
         $q = mysqli_query($con, "SELECT ID, ResponseCode, ErrorCode, ErrorCodeDesc FROM $tabel WHERE ID = '$id'");
         $dt = mysqli_fetch_array($q);
-        if ($dt['ResponseCode'] == 'DECLINE' && $param != '') {
+        if ($dt['ResponseCode'] > '000' && $param > '000') {
             return true;
         }
-        elseif ($dt['ResponseCode'] != 'DECLINE' && $param == ''){
+        elseif ($dt['ResponseCode'] == '000' && $param == ''){
             return true;
         }
     }

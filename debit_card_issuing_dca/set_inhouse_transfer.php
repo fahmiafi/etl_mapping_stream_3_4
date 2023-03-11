@@ -33,6 +33,7 @@ $mandatory = [
 
 
 $default_mapping = [
+    'IncomingOrOutgoingFlag' => 'D',
     'TransactionCategory' => 'Inhouse Transfer',
     'ChannelCode' => 'DCA',
     'VerificationMethod' => '1' ,
@@ -41,6 +42,7 @@ $default_mapping_keys = array_keys($default_mapping);
 
 $skip_mandatory = [
     'ErrorCode',
+    'ErrorCodeDesc',
     'ReversalIndicator',
 ];
 
