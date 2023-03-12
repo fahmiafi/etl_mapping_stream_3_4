@@ -61,7 +61,7 @@ function TransactionId ($id){
     $q = mysqli_query($con, "SELECT * FROM $tabel where ID = '$id'");
     $dt = mysqli_fetch_array($q);
 
-    $data = "DCM".str_replace(array('-', ':', ' '), "", $dt['TransactionDateTime']);
+    $data = "DCE".str_replace(array('-', ':', ' '), "", $dt['TransactionDateTime']);
 
     // if ($data == $dt['TransactionId']) {
     if ($data == substr($dt['TransactionId'], 0, 17)) {
@@ -77,6 +77,21 @@ function ReversalIndicator($id){
     $dt = mysqli_fetch_array($q);
 
     if ($dt['ReversalIndicator'] == NULL || $dt['ReversalIndicator'] == 'R') {
+        return true;
+    }
+    return false;
+}
+
+function ECommerceIndicator($id){
+    global $con, $tabel;
+    
+    $arr_ECommerceIndicator = ['E', 'N', 'V', 'A', 'W', 'C', 'O', 'R'];
+    $q = mysqli_query($con, "SELECT ECommerceIndicator FROM $tabel where ID = '$id'");
+    $dt = mysqli_fetch_array($q);
+
+    $data = $dt['ECommerceIndicator'];
+    
+    if (in_array($data, $arr_ECommerceIndicator)) {
         return true;
     }
     return false;

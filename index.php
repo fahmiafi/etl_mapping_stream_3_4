@@ -22,15 +22,15 @@ $stream_3a = [
         'name' => 'debit_card_issuing',
         'path' => 'debit_card_issuing_dcm',
     ],
-    'DEBIT_CARD_ISSUING (DCD)' => [
-        'channel_code' => 'DCD',
-        'name' => 'debit_card_issuing',
-        'path' => 'debit_card_issuing_dcd',
-    ],
     'DEBIT_CARD_ISSUING (DCE)' => [
         'channel_code' => 'DCE',
         'name' => 'debit_card_issuing',
         'path' => 'debit_card_issuing_dce',
+    ],
+    'DEBIT_CARD_ISSUING (DCD)' => [
+        'channel_code' => 'DCD',
+        'name' => 'debit_card_issuing',
+        'path' => 'debit_card_issuing_dcd',
     ],
 ];
 ?>
