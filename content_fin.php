@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
     <h3>Tipe transaksi yang terdapat pada data:</h3>
     <?php
     $no = 1;
-    $q_tran_tipe = mysqli_query($con, "SELECT DISTINCT(TRANSACTIONTYPE) FROM $tabel WHERE TransactionCategory = '".$_POST['tran_type']."' AND ChannelCode = '$channelcode'");
+    $q_tran_tipe = mysqli_query($con, "SELECT DISTINCT(TRANSACTIONTYPE) FROM $tabel WHERE TransactionCategory = '".str_replace(" (Bulk)","", $_POST['tran_type'])."' AND ChannelCode = '$channelcode' AND $query_where ".$_POST['where']."");
     while($dt_tran_tipe = mysqli_fetch_array($q_tran_tipe)){
         echo $no++.". ".$dt_tran_tipe['TRANSACTIONTYPE']."<br>";
     }
@@ -19,8 +19,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
     <?php
     $limit = $_POST['limit'];
     $id_data = [];
-    // echo "SELECT ID FROM $tabel WHERE TransactionCategory = '".$_POST['tran_type']."' AND $query_where ".$_POST['where']." LIMIT $limit";
-    $sql = mysqli_query($con, "SELECT ID FROM $tabel WHERE TransactionCategory = '".$_POST['tran_type']."' AND ChannelCode = '$channelcode' AND $query_where ".$_POST['where']." LIMIT $limit");
+    // echo "SELECT ID FROM $tabel WHERE TransactionCategory = '".str_replace(" (Bulk)","", $_POST['tran_type'])."' AND $query_where ".$_POST['where']." LIMIT $limit";
+    $sql = mysqli_query($con, "SELECT ID FROM $tabel WHERE TransactionCategory = '".str_replace(" (Bulk)","", $_POST['tran_type'])."' AND ChannelCode = '$channelcode' AND $query_where ".$_POST['where']." LIMIT $limit");
     while ($dt = mysqli_fetch_assoc($sql)) {
         $id_data[] = $dt['ID'];
     }
@@ -111,7 +111,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
         </table>
     </div>
     <?php
-    $name_file = date('YmdGis').'_'.$name_channel.'_'.$_POST['tran_type'].'.xlsx';
+    $name_file = date('YmdGis').'_'.$name_channel.'_'.str_replace(" (Bulk)","", $_POST['tran_type']).'.xlsx';
     // mysqli_query($con, "INSERT INTO export_excel (name, date, category) VALUES ('$name_file', '".date('Y-m-d G:i:s')."', '$name_channel')");
     // $writer = new Xlsx($spreadsheet);
     // $writer->save('../download/'.$name_file);

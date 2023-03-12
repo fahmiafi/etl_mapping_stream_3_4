@@ -33,6 +33,14 @@ $stream_3a = [
         'path' => 'debit_card_issuing_dcd',
     ],
 ];
+
+$stream_4 = [
+    'BNI DIRECT' => [
+        'channel_code' => 'IBC',
+        'name' => 'bni_direct_fin',
+        'path' => 'bni_direct_ibc_fin',
+    ],
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +56,18 @@ $stream_3a = [
         <ol>
             <?php
             foreach ($stream_3a as $key => $value) {
+                ?>
+                <li><a href="<?= $value['path']?>/index.php?name=<?= $value['name']?>&channel_code=<?= $value['channel_code']?>"><?= $key?></a></li>  
+                <?php
+            }
+            ?>
+        </ul>
+    </div>
+    <div style="width: 500px; border: 1px solid black; padding: 20px">
+        <h3 style="text-align: center;">Stream 4</h3>
+        <ol>
+            <?php
+            foreach ($stream_4 as $key => $value) {
                 ?>
                 <li><a href="<?= $value['path']?>/index.php?name=<?= $value['name']?>&channel_code=<?= $value['channel_code']?>"><?= $key?></a></li>  
                 <?php
