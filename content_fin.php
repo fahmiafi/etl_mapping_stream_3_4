@@ -1,6 +1,19 @@
 <?php
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 ?>
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        background-color: #FFA07A;
+        padding: 5px;
+    }
+    .grid-item {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.8);
+        padding: 5px;
+    }
+</style>
 <div class="content">
     <h3>Tipe transaksi yang terdapat pada data:</h3>
     <?php
@@ -30,6 +43,16 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
     </div>
     <div class="container">
         <table border="1" style="margin:20px 30px 20px 2opx" id="tbl_data">
+            <tr>
+                <th>ID Data</th>
+                <?php
+                    for ($j=0; $j < count($id_data); $j++) { 
+                        ?>
+                        <td><?= $id_data[$j]?></td>
+                        <?php
+                    }
+                ?>
+            </tr>
             <?php
             $row = 1;
             $notes = array();
@@ -57,7 +80,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
                     $note_false = array();
                     for ($j=0; $j < count($id_data); $j++) { 
                         $id = $id_data[$j];
-                        $query = mysqli_query($con, "SELECT * FROM $tabel WHERE ID = '$id' LIMIT 1");
+                        $query = mysqli_query($con, "SELECT TransactionId, $kolom[$i] FROM $tabel WHERE ID = '$id' LIMIT 1");
                         $data = mysqli_fetch_array($query);
 
                         // <kondisi jika ada yang mappingan khusus>
@@ -72,16 +95,21 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
                         }
                         else{
                             $note = $data[$kolom[$i]] == '' ? 'NULL' : $data[$kolom[$i]];
-                            if ($kolom[$i] != 'TransactionId') {
-                                $note .= ">>".$data['TransactionId'];
+                            if (!array_key_exists($id, $notes)) {
+                                $notes[$id] = array();
                             }
-                            array_push($note_false, $note);
+                            array_push($notes[$id], $kolom[$i]);
+                            // $note = $data[$kolom[$i]] == '' ? 'NULL' : $data[$kolom[$i]];
+                            // if ($kolom[$i] != 'TransactionId') {
+                            //     $note .= ">>".$data['TransactionId'];
+                            // }
+                            // array_push($note_false, $note);
                             $color = "FFD700";
                         }
 
-                        if($j == count($id_data)-1 && count($note_false) > 0){
-                            $notes[$kolom[$i]] = $note_false;
-                        }
+                        // if($j == count($id_data)-1 && count($note_false) > 0){
+                        //     $notes[$kolom[$i]] = $note_false;
+                        // }
                         ?>
                         <td style="background-color:#<?= $color?>"><?= $data[$kolom[$i]]?></td>
                         <?php
@@ -112,9 +140,9 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
     </div>
     <?php
     $name_file = date('YmdGis').'_'.$name_channel.'_'.str_replace(" (Bulk)","", $_POST['tran_type']).'.xlsx';
-    // mysqli_query($con, "INSERT INTO export_excel (name, date, category) VALUES ('$name_file', '".date('Y-m-d G:i:s')."', '$name_channel')");
-    // $writer = new Xlsx($spreadsheet);
-    // $writer->save('../download/'.$name_file);
+    mysqli_query($con, "INSERT INTO export_excel (name, date, category) VALUES ('$name_file', '".date('Y-m-d G:i:s')."', '$name_channel')");
+    $writer = new Xlsx($spreadsheet);
+    $writer->save('../download/'.$name_file);
 
     ?>
     <br>
@@ -122,45 +150,27 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
     <br><br>
 
     <h3>Notes: </h3>
-    <table style="background-color: #FFA07A;" border="1">
-        <thead>
-            <tr>
-                <?php
-                foreach ($notes as $key => $value) {
-                    ?>
-                    <th>
-                        <?= $key?><br>
-                        <?= count($value)?>
-                    </th>
+    <div class="grid-container">
+        <?php
+        $no = 1;
+        foreach ($notes as $key => $note) {
+            $q_note = mysqli_query($con, "SELECT * FROM $tabel WHERE ID = '$key'");
+            $dt_note = mysqli_fetch_array($q_note);
+            ?>
+            <div class="grid-item">
+                <b><?= $no++?>. <?= $dt_note['TransactionId']?> (<?= count($note)?>)</b>
+                <ol style="margin-bottom:0px">
                     <?php
-                }
-                ?>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="vertical-align: top;">
-                <?php
-                foreach ($notes as $key => $value) {
-                    $no = 1;
+                    for ($i=0; $i < count($note); $i++) { 
+                        ?>
+                        <li> <?= $note[$i]?> >> <?= $dt_note[$note[$i]] == '' ? 'NULL' : $dt_note[$note[$i]]?></li>
+                        <?php
+                    }
                     ?>
-                    <td>
-                        <table>
-                            <?php
-                            for ($i=0; $i < count($value); $i++) {
-                                ?>
-                                <tr>
-                                    <td><?= $no++?></td>
-                                    <td><?= $value[$i]?></td>
-                                </tr>
-                                <?php
-                            }
-                            ?>
-                        </table>
-                    </td>
-                    <?php
-                }
-                ?>
-            </tr>
-        </tbody>
-    </table>
+                </ol>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
 </div>
