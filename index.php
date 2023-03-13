@@ -35,10 +35,15 @@ $stream_3a = [
 ];
 
 $stream_4 = [
-    'BNI DIRECT' => [
+    'BNI DIRECT FIN' => [
         'channel_code' => 'IBC',
         'name' => 'bni_direct_fin',
         'path' => 'bni_direct_ibc_fin',
+    ],
+    'BNI DIRECT NON FIN' => [
+        'channel_code' => 'IBC',
+        'name' => 'bni_direct_nonfin',
+        'path' => 'bni_direct_ibc_nonfin',
     ],
 ];
 ?>
